@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 import "./global.css";
-import Navbar from "../components/NavBar";
+import Navbar from "./NavBar";
 
 export default function RootLayout() {
   return (

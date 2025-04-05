@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity, ActivityIndicator } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, TouchableOpacity, ActivityIndicator, Dimensions } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -18,6 +18,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const router = useRouter();
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
+  
+  // Calculate card width to make them exactly the same size
+  const screenWidth = Dimensions.get('window').width;
+  const cardWidth = (screenWidth - 32) / 2; // 32 accounts for outer padding (16 on each side)
 
   const navigateToProduct = () => {
     router.push(`/product/${product.id}`);
@@ -25,10 +29,32 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <TouchableOpacity
-      className="bg-white rounded-lg shadow-md p-4 m-2 w-[47%]"
+      style={{
+        backgroundColor: 'white',
+        borderRadius: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 2,
+        padding: 12,
+        margin: 4,
+        width: cardWidth,
+        height: 280, // Fixed height for all cards
+      }}
       onPress={navigateToProduct}
     >
-      <View className="w-full h-40 bg-gray-50 rounded-lg justify-center items-center overflow-hidden">
+      {/* Image Container */}
+      <View style={{
+        width: '100%',
+        height: 160,
+        backgroundColor: '#f7f7f7',
+        borderRadius: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+        marginBottom: 8
+      }}>
         {imageLoading && (
           <ActivityIndicator size="small" color="#f4b001" />
         )}
@@ -36,29 +62,42 @@ const ProductCard = ({ product }: ProductCardProps) => {
         {!imageError ? (
           <Image
             source={{ uri: product.image }}
-            className="w-full h-40"
+            style={{ width: '100%', height: '100%' }}
             resizeMode="contain"
             onLoadStart={() => setImageLoading(true)}
             onLoadEnd={() => setImageLoading(false)}
             onError={() => {
-              console.error(`Failed to load image for ${product.title}`);
               setImageError(true);
               setImageLoading(false);
             }}
           />
         ) : (
-          <View className="justify-center items-center">
+          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             <Ionicons name="image-outline" size={32} color="#d1d5db" />
-            <Text className="text-gray-400 text-xs mt-2">Image unavailable</Text>
+            <Text style={{ color: '#9ca3af', fontSize: 12, marginTop: 4 }}>Image unavailable</Text>
           </View>
         )}
       </View>
       
-      <Text numberOfLines={2} className="text-base font-bold mt-2 text-gray-800 h-10">
-        {product.title}
-      </Text>
+      {/* Title - Fixed height */}
+      <View style={{ height: 40, marginBottom: 4 }}>
+        <Text 
+          numberOfLines={2} 
+          style={{ fontSize: 14, fontWeight: 'bold', color: '#333333' }}
+        >
+          {product.title}
+        </Text>
+      </View>
       
-      <Text className="text-secondary mt-1 font-semibold">${product.price.toFixed(2)}</Text>
+      {/* Price - Fixed position at bottom */}
+      <Text style={{ 
+        color: '#f4b001', 
+        marginTop: 'auto', 
+        fontWeight: '600',
+        fontSize: 16
+      }}>
+        ${product.price.toFixed(2)}
+      </Text>
     </TouchableOpacity>
   );
 };

@@ -25,8 +25,18 @@ const WishlistCard = ({ item, onRemove, onView }: WishlistCardProps) => {
   }, [item]);
 
   return (
-    <View className="bg-white rounded-lg shadow-md p-4 m-2">
-      <View className="flex-row">
+    <View style={{
+      backgroundColor: 'white',
+      borderRadius: 8,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.1,
+      shadowRadius: 2,
+      elevation: 2,
+      padding: 16,
+      margin: 8,
+    }}>
+      <View style={{ flexDirection: 'row' }}>
         {/* Image container with explicit styling */}
         <View style={{ 
           width: 80, 
@@ -62,26 +72,44 @@ const WishlistCard = ({ item, onRemove, onView }: WishlistCardProps) => {
           )}
         </View>
         
-        <View className="flex-1 ml-3 justify-center">
-          <Text className="text-lg font-bold" numberOfLines={2}>{item.title}</Text>
-          <Text className="text-secondary mt-1">${item.price}</Text>
+        <View style={{ flex: 1, marginLeft: 12, justifyContent: 'center' }}>
+          <Text numberOfLines={2} style={{ fontSize: 16, fontWeight: 'bold' }}>{item.title}</Text>
+          <Text style={{ color: '#f4b001', marginTop: 4, fontSize: 16 }}>${item.price.toFixed(2)}</Text>
         </View>
       </View>
       
-      <View className="flex-row justify-between mt-4">
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 16 }}>
         <TouchableOpacity
-          className="bg-secondary rounded-lg py-3 px-4 flex-1 mr-2"
+          style={{
+            backgroundColor: '#f4b001', // Secondary color (blue)
+            borderRadius: 8,
+            paddingVertical: 10,
+            paddingHorizontal: 12,
+            flex: 1,
+            marginRight: 8,
+            justifyContent: 'center'
+          }}
           onPress={() => onView(item.id)}
         >
-          <Text className="text-white text-center font-bold">View Details</Text>
+          <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}>View Details</Text>
         </TouchableOpacity>
         
         <TouchableOpacity
-          className="bg-red-500 rounded-lg py-3 px-4 flex-1 ml-2 flex-row justify-center items-center"
+          style={{
+            backgroundColor: '#ef4444', // Red color
+            borderRadius: 8,
+            paddingVertical: 10,
+            paddingHorizontal: 12,
+            flex: 1,
+            marginLeft: 8,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
           onPress={() => onRemove(item.id)}
         >
-          <Ionicons name="trash" size={18} color="white" />
-          <Text className="text-white text-center font-bold ml-1">Remove</Text>
+          <Ionicons name="trash-outline" size={18} color="white" />
+          <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold', marginLeft: 4 }}>Remove</Text>
         </TouchableOpacity>
       </View>
     </View>

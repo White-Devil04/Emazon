@@ -7,7 +7,8 @@ const Navbar = () => {
     <View className="flex-row justify-between items-center px-4 py-3 bg-white border-b border-gray-200">
       <Image
         source={require("./../assets/images/icon.png")}
-        className="w-12 h-12"
+        style={{ width: 24, height: 24 }}
+        className="object-contain"
       />
 
 
